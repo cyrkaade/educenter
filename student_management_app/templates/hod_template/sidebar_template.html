@@ -47,15 +47,6 @@
               </a>
             </li>
             
-            <li class="nav-item">
-              {% url 'add_staff' as add_staff %}
-              <a href="{{ add_staff }}" class="nav-link {% if request.path == add_staff %} active {% endif %}">
-                <i class="nav-icon fas fa-th"></i>
-                <p>
-                  Добавить Персонал
-                </p>
-              </a>
-            </li>
 
             <li class="nav-item">
               {% url 'manage_student' as manage_student %}
@@ -68,15 +59,6 @@
               </a>
             </li>
 
-            <li class="nav-item">
-              {% url 'add_student' as add_student %}
-              <a href="{{ add_student }}" class="nav-link {% if request.path == add_student %} active {% endif %}">
-                <i class="nav-icon fas fa-th"></i>
-                <p>
-                  Добавить Студента
-                </p>
-              </a>
-            </li>
 
             <li class="nav-item">
               {% url 'manage_course' as manage_course %}
@@ -89,15 +71,6 @@
               </a>
             </li>
 
-            <li class="nav-item">
-            {% url 'add_course' as add_course %}
-              <a href="{{ add_course }}" class="nav-link {% if request.path == add_course %} active {% endif %}">
-                <i class="nav-icon fas fa-th"></i>
-                <p>
-                  Добавить Курс
-                </p>
-              </a>
-            </li>
 
             <li class="nav-item">
               {% url 'manage_subject' as manage_subject %}
@@ -110,16 +83,6 @@
               </a>
             </li>
 
-            <li class="nav-item">
-              {% url 'add_subject' as add_subject %}
-              <a href="{{ add_subject }}" class="nav-link {% if request.path == add_subject %} active {% endif %}">
-                <i class="nav-icon fas fa-th"></i>
-                <p>
-                  Добавить Предмет
-                </p>
-              </a>
-            </li>
-
 
             <li class="nav-item">
               {% url 'manage_session' as manage_session %}
@@ -128,16 +91,6 @@
                 <i class="nav-icon fas fa-graduation-cap"></i>
                 <p>
                   Управление Сессиями
-                </p>
-              </a>
-            </li>
-
-            <li class="nav-item">
-              {% url 'add_session' as add_session %}
-              <a href="{{ add_session }}" class="nav-link {% if request.path == add_session %} active {% endif %}">
-                <i class="nav-icon fas fa-th"></i>
-                <p>
-                  Добавить Сессию
                 </p>
               </a>
             </li>
