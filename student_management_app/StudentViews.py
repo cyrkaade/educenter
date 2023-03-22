@@ -3,9 +3,20 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage #To upload Profile Picture
 from django.urls import reverse
-import datetime # To Parse input DateTime into Python Date Time Object
-
+import datetime,time # To Parse input DateTime into Python Date Time Object
+from django.shortcuts import render, redirect
+from paypal.standard.forms import PayPalPaymentsForm
+from django.urls import reverse
+from django.conf import settings
 from student_management_app.models import CustomUser, Staffs, Courses, Subjects, Students, Attendance, AttendanceReport, LeaveReportStudent, FeedBackStudent, StudentResult
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
+import logging
+from decimal import Decimal
+from paypal.standard.forms import PayPalPaymentsForm
+from paypal.standard.ipn.forms import PayPalIPNForm
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseForbidden
 
 
 def student_home(request):
@@ -194,6 +205,77 @@ def student_view_result(request):
     }
     return render(request, "student_template/student_view_result.html", context)
 
+
+
+
+
+
+
+@login_required
+def payment(request):
+    try:
+        student = Students.objects.get(admin=request.user)
+    except Students.DoesNotExist:
+        return HttpResponseForbidden("Access denied.")
+    amount = 10  # You can change this value based on your subscription pricing
+
+    paypal_dict = {
+        "business": settings.PAYPAL_RECEIVER_EMAIL,
+        "amount": amount,
+        "item_name": "Subscription",
+        "invoice": f"INV-{student.id}-{int(time.time())}",
+        "notify_url": request.build_absolute_uri(reverse('paypal-ipn')),
+        "return_url": request.build_absolute_uri(reverse('payment_done')),
+        "cancel_return": request.build_absolute_uri(reverse('payment_cancelled')),
+        "custom": str(request.user.id),
+    }
+
+    form = PayPalPaymentsForm(initial=paypal_dict)
+    return render(request, "student_template/payment.html", {"form": form})
+
+from django.views.decorators.csrf import csrf_exempt
+
+
+@csrf_exempt
+def payment_done(request):
+    student_id = request.GET.get('custom')
+    student = Students.objects.get(admin=request.user)
+    amount = 10  # Use the same value as in make_payment view
+    student.create_transaction(amount)
+    return render(request, 'student_template/payment_done.html')
+
+@csrf_exempt
+def payment_cancelled(request):
+    return render(request, 'student_template/payment_cancelled.html')
+
+
+
+
+
+
+
+logger = logging.getLogger(__name__)
+
+@csrf_exempt
+def paypal_ipn(request):
+    # Verify the IPN received from PayPal
+    form = PayPalIPNForm(request.POST)
+    if form.is_valid():
+        ipn = form.save()
+        logger.info(f"PayPal IPN received: {ipn}")
+
+        # Update the student's balance
+        try:
+            student = Students.objects.get(admin=ipn.custom)
+            student.balance += Decimal(ipn.mc_gross)
+            student.save()
+            logger.info(f"Updated balance for student: {student.id} to {student.balance}")
+        except Students.DoesNotExist:
+            logger.error(f"Student not found for user ID: {ipn.custom}")
+    else:
+        logger.error("Invalid PayPal IPN received")
+
+    return HttpResponse(status=200)
 
 
 
