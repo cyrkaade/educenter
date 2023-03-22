@@ -92,6 +92,16 @@
               </a>
             </li>
 
+            <li class="nav-item">
+              {% url 'videos' as videos %}
+              <a href="{{ videos }}" class="nav-link {% if request.path == videos %} active {% endif %}">
+                <i class="nav-icon fas fa-video"></i>
+                <p>
+                  Видеоуроки
+                </p>
+              </a>
+            </li>
+
           </ul>
         </nav>
         <!-- /.sidebar-menu -->

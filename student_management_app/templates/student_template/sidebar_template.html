@@ -81,6 +81,38 @@
               </a>
             </li>
 
+            <li class="nav-item">
+              {% url 'payment' as payment %}
+              <a href="{% url 'payment' %}" class="nav-link {% if request.path == payment %} active {% endif %}">
+                <i class="nav-icon fas fa-money-bill"></i>
+                <p>
+                  Баланс
+                  {% comment %} <span class="right badge badge-danger">Новое</span> {% endcomment %}
+                </p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              {% url 'subscribe' as subscribe %}
+              <a href="{% url 'subscribe' %}" class="nav-link {% if request.path == subscribe %} active {% endif %}">
+                <i class="nav-icon fas fa-money-check-alt"></i>
+                <p>
+                  Подписка
+                  {% comment %} <span class="right badge badge-danger">Новое</span> {% endcomment %}
+                </p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              {% url 'videos' as videos %}
+              <a href="{% url 'videos' %}" class="nav-link {% if request.path == videos %} active {% endif %}">
+                <i class="nav-icon fas fa-video"></i>
+                <p>
+                  Видеоуроки
+                  {% comment %} <span class="right badge badge-danger">Новое</span> {% endcomment %}
+                </p>
+              </a>
+            </li>
           </ul>
         </nav>
         <!-- /.sidebar-menu -->

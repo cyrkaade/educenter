@@ -1,0 +1,34 @@
+{% extends 'student_template/base_template.html' %}
+
+{% block page_title %}
+    Пополнить баланс
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+
+<section class="content">
+    <div class="container-fluid">
+
+        {% comment %} Boxes секция начинается {% endcomment %}
+        <div class="row">
+            <div class="col-lg-2 col-5">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                <div class="inner">
+                    <h3>{{ total_attendance }}</h3>
+
+                    <h2>Пополните Баланс</h2>
+                    <p>{{ form.render }}</p>
+                </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                <div class="inner">
+                    <h3>Ваш Баланс: {{student.balance}}</h3>
+                </div>
+{% endblock main_content %}

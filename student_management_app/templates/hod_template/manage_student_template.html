@@ -67,6 +67,8 @@
                                 <th>Email Адрес</th>
                                 <th>Адрес</th>
                                 <th>Пол</th>
+                                <th>Баланс</th>
+                                <th>Подписка</th>
                                 <th>Аватар</th>
                                 <th>Год Начала Обучения</th>
                                 <th>Год Окончания Обучения</th>
@@ -86,6 +88,8 @@
                                 <td>{{ student.admin.email }}</td>
                                 <td>{{ student.address }}</td>
                                 <td>{{ student.gender }}</td>
+                                <td>${{ student.balance }}</td>
+                                <td>{{student.subscribed}}</td>
                                 <td> <img src="{{ student.profile_pic }}" style="width: 100px;" /> </td>
                                 <td>{{ student.session_year_id.session_start_year }}</td>
                                 <td>{{ student.session_year_id.session_end_year }}</td>

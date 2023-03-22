@@ -1,0 +1,42 @@
+{% extends 'student_template/base_template.html' %}
+
+{% block page_title %}
+    Приобрести подписку
+{% endblock page_title %}
+
+{% block main_content %}
+{% load static %}
+{% if messages %}
+                                  <div class="form-group">
+                                  <div class="col-12">
+                                      {% for message in messages %}
+                                      {% if message.tags == "error" %}
+                                          <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                          {{ message }}
+                                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                          </button>
+                                          </div>
+                                      {% elif message.tags == "success" %}
+                                          <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                          {{ message }}
+                                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                          </button>
+                                          </div>
+                                      {% endif %}
+                                      {% endfor %}
+                                  </div>
+                                  </div>
+                                  {% endif %}
+<p>Стоимость $10/месяц</p>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Оформить подписку</button>
+  </form>
+
+  <p>Your subscription is currently: <strong>{{ subscription_status }}</strong></p>
+
+
+{% endblock main_content %}

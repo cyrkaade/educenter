@@ -347,6 +347,7 @@ def add_student_save(request):
             session_year_id = form.cleaned_data['session_year_id']
             course_id = form.cleaned_data['course_id']
             gender = form.cleaned_data['gender']
+            balance = form.cleaned_data['balance']
 
             # Getting Profile Pic first
             # First Check whether the file is selected or not
@@ -372,6 +373,7 @@ def add_student_save(request):
 
                 user.students.gender = gender
                 user.students.profile_pic = profile_pic_url
+                user.students.balance = balance
                 user.save()
                 messages.success(request, "Student Added Successfully!")
                 return redirect('add_student')
@@ -405,6 +407,7 @@ def edit_student(request, student_id):
     form.fields['course_id'].initial = student.course_id.id
     form.fields['gender'].initial = student.gender
     form.fields['session_year_id'].initial = student.session_year_id.id
+    form.fields['balance'].initial = student.balance
 
     context = {
         "id": student_id,
@@ -432,6 +435,7 @@ def edit_student_save(request):
             course_id = form.cleaned_data['course_id']
             gender = form.cleaned_data['gender']
             session_year_id = form.cleaned_data['session_year_id']
+            balance = form.cleaned_data['balance']
 
             # Getting Profile Pic first
             # First Check whether the file is selected or not
@@ -456,6 +460,7 @@ def edit_student_save(request):
                 # Then Update Students Table
                 student_model = Students.objects.get(admin=student_id)
                 student_model.address = address
+                student_model.balance = balance
 
                 course = Courses.objects.get(id=course_id)
                 student_model.course_id = course
@@ -790,5 +795,18 @@ def staff_profile(request):
 def student_profile(requtest):
     pass
 
+from .forms import VideoForm
+from .models import Video
 
+def upload_video(request):
+    if request.method == 'POST':
+        form = VideoForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return render(request, 'hod_template/videos.html', {'videos': Video.objects.all()})
+    else:
+        form = VideoForm()
+    return render(request, 'hod_template/upload_videos.html', {'form': form})
 
+def video_list(request):
+    return render(request, 'hod_template/videos.html', {'videos': Video.objects.all()})

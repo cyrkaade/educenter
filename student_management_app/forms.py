@@ -1,6 +1,7 @@
 from django import forms 
 from django.forms import Form
 from student_management_app.models import Courses, SessionYearModel
+from .models import Video
 
 
 class DateInput(forms.DateInput):
@@ -14,6 +15,7 @@ class AddStudentForm(forms.Form):
     last_name = forms.CharField(label="Фамилия", max_length=50, widget=forms.TextInput(attrs={"class":"form-control"}))
     username = forms.CharField(label="Логин", max_length=50, widget=forms.TextInput(attrs={"class":"form-control"}))
     address = forms.CharField(label="Адрес", max_length=50, widget=forms.TextInput(attrs={"class":"form-control"}))
+
 
     #For Displaying Courses
     try:
@@ -47,6 +49,9 @@ class AddStudentForm(forms.Form):
     # session_start_year = forms.DateField(label="Session Start", widget=DateInput(attrs={"class":"form-control"}))
     # session_end_year = forms.DateField(label="Session End", widget=DateInput(attrs={"class":"form-control"}))
     profile_pic = forms.FileField(label="Аватар", required=False, widget=forms.FileInput(attrs={"class":"form-control"}))
+    balance = forms.DecimalField(label='Баланс', max_digits=8, widget=forms.NumberInput(attrs={"class":"form-control"}))
+    subscribed = forms.BooleanField(label='Активная подписка', widget=forms.CheckboxInput(attrs={"class":"form-control"}))
+
 
 
 
@@ -90,3 +95,14 @@ class EditStudentForm(forms.Form):
     # session_start_year = forms.DateField(label="Session Start", widget=DateInput(attrs={"class":"form-control"}))
     # session_end_year = forms.DateField(label="Session End", widget=DateInput(attrs={"class":"form-control"}))
     profile_pic = forms.FileField(label="Аватар", required=False, widget=forms.FileInput(attrs={"class":"form-control"}))
+    balance = forms.DecimalField(label='Баланс', max_digits=8, widget=forms.NumberInput(attrs={"class":"form-control"}))
+    subscribed = forms.BooleanField(label='Активная подписка')
+
+
+class SubscriptionForm(forms.Form):
+    months = forms.IntegerField(min_value=1, label='Число месяцев')
+
+class VideoForm(forms.ModelForm):
+    class Meta:
+        model = Video
+        fields = ('title', 'video_file',)

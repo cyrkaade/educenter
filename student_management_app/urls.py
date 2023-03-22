@@ -2,10 +2,15 @@
 from django.urls import path, include
 from . import views
 from .import HodViews, StaffViews, StudentViews
+from paypal.standard.ipn import views as paypal_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
     path('', views.loginPage, name="login"),
+    path('upload_videos/', views.upload_video, name='upload_videos'),
+    path('videos/', views.video_list, name='videos'),
     # path('accounts/', include('django.contrib.auth.urls')),
     path('doLogin/', views.doLogin, name="doLogin"),
     path('get_user_details/', views.get_user_details, name="get_user_details"),
@@ -58,7 +63,6 @@ urlpatterns = [
     path('admin_get_attendance_student/', HodViews.admin_get_attendance_student, name="admin_get_attendance_student"),
     path('admin_profile/', HodViews.admin_profile, name="admin_profile"),
     path('admin_profile_update/', HodViews.admin_profile_update, name="admin_profile_update"),
-    
 
 
     # URLS for Staff
@@ -79,6 +83,7 @@ urlpatterns = [
     path('staff_add_result/', StaffViews.staff_add_result, name="staff_add_result"),
     path('staff_add_result_save/', StaffViews.staff_add_result_save, name="staff_add_result_save"),
 
+
     # URSL for Student
     path('student_home/', StudentViews.student_home, name="student_home"),
     path('student_view_attendance/', StudentViews.student_view_attendance, name="student_view_attendance"),
@@ -90,4 +95,17 @@ urlpatterns = [
     path('student_profile/', StudentViews.student_profile, name="student_profile"),
     path('student_profile_update/', StudentViews.student_profile_update, name="student_profile_update"),
     path('student_view_result/', StudentViews.student_view_result, name="student_view_result"),
+    path('student_view_videolessons/', StudentViews.student_view_result, name="student_view_videolessons"),
+    path('payment/', StudentViews.payment, name='payment'),
+    path('payment/done/', StudentViews.payment_done, name='payment_done'),
+    path('payment/cancelled/', StudentViews.payment_cancelled, name='payment_cancelled'),
+    path('paypal_ipn/', StudentViews.paypal_ipn, name='paypal_ipn'),
+    path('paypal-ipn/', paypal_views.ipn, name='paypal-ipn'),
+    path('subscribe/', StudentViews.subscribe, name='subscribe'),
+    path('restricted/', StudentViews.restricted_view, name='restricted'),
+
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+

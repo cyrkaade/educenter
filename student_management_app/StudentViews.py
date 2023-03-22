@@ -17,6 +17,9 @@ from paypal.standard.forms import PayPalPaymentsForm
 from paypal.standard.ipn.forms import PayPalIPNForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
+from dateutil.relativedelta import relativedelta
+from django.utils import timezone
+from .forms import SubscriptionForm
 
 
 def student_home(request):
@@ -231,7 +234,7 @@ def payment(request):
     }
 
     form = PayPalPaymentsForm(initial=paypal_dict)
-    return render(request, "student_template/payment.html", {"form": form})
+    return render(request, "student_template/payment.html", {"form": form, "student":student})
 
 from django.views.decorators.csrf import csrf_exempt
 
@@ -276,6 +279,56 @@ def paypal_ipn(request):
         logger.error("Invalid PayPal IPN received")
 
     return HttpResponse(status=200)
+
+
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from .models import Students
+from .forms import SubscriptionForm
+@login_required
+
+def subscribe(request):
+    if request.method == 'POST':
+        form = SubscriptionForm(request.POST)
+        if form.is_valid():
+            months = form.cleaned_data['months']
+            student = Students.objects.get(admin=request.user)
+            if student.purchase_subscription(months):
+                messages.success(request, f'Successfully purchased a {months}-month subscription.')
+            else:
+                messages.error(request, 'Not enough balance to purchase the subscription.')
+            return redirect('subscribe')  # Replace 'subscription' with the appropriate URL name
+    else:
+        form = SubscriptionForm()
+    student = Students.objects.get(admin=request.user)
+    subscription_status = 'active' if student.has_paid() else 'inactive'
+    return render(request, 'student_template/subscribe.html', {'form': form, 'subscription_status': subscription_status,})
+
+from django.http import HttpResponseForbidden
+
+def require_subscription(view_func):
+    def _wrapped_view(request, *args, **kwargs):
+        student = Students.objects.get(admin=request.user)
+        if student.has_paid():
+            return view_func(request, *args, **kwargs)
+        else:
+            return HttpResponseForbidden('You need an active subscription to access this page.')
+
+    return _wrapped_view
+
+from .decorators import require_subscription
+
+@login_required
+@require_subscription
+def restricted_view(request):
+    # Your view logic here
+    return render(request, 'student_template/restricted_page.html')
+
+from .models import Video
+
+def video_list(request):
+    return render(request, 'student_template/videos.html', {'videos': Video.objects.all()})
+
 
 
 

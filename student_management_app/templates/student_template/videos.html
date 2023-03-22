@@ -1,0 +1,44 @@
+{% extends 'student_template/base_template.html' %}
+
+{% block page_title %}
+    Результат
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+<head>
+    <title>Video List</title>
+</head>
+<section class="content">
+        <div class="container-fluid">
+
+            
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Результат</h3>
+                        </div>
+
+                        <div class="card-body">
+                            <body>
+                                <h1>Video List</h1>
+                                <ul>
+                                    {% for video in videos %}
+                                        <li>{{ video.title }} <video width="320" height="240" controls>
+                                        <source src="{{ video.video_file.url }}" type="video/mp4"></video></li>
+                                    {% empty %}
+                                        <li>No videos have been uploaded.</li>
+                                    {% endfor %}
+                                </ul>
+                                
+                            </body>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</section>
+{% endblock main_content %}

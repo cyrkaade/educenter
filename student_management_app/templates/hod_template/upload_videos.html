@@ -1,0 +1,26 @@
+{% extends 'hod_template/base_template.html' %}
+
+{% block page_title %}
+    Добавление видеоуроков
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Загрузить видео</title>
+</head>
+<body>
+    <h1>Загрузить видео</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Загрузить</button>
+    </form>
+</body>
+</html>
+{% endblock main_content %}

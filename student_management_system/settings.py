@@ -1,5 +1,7 @@
 
 import os
+import paypalrestsdk
+from django.conf import settings
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,8 +28,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'paypal.standard.ipn',
     'student_management_app',
+    'widget_tweaks'
 ]
 
 MIDDLEWARE = [
@@ -78,6 +81,9 @@ DATABASES = {
 }
 
 
+
+PAYPAL_RECEIVER_EMAIL = 'jojojojo2@gmail.com'
+PAYPAL_TEST = True 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 

@@ -9,7 +9,6 @@ class LoginCheckMiddleWare(MiddlewareMixin):
         modulename = view_func.__module__
         # print(modulename)
         user = request.user
-
         #Check whether the user is logged in or not
         if user.is_authenticated:
             if user.user_type == "1":

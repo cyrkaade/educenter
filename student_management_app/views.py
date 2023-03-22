@@ -3,7 +3,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
-
 from student_management_app.EmailBackEnd import EmailBackEnd
 
 
@@ -58,3 +57,23 @@ def logout_user(request):
     return HttpResponseRedirect('/')
 
 
+
+
+
+
+from .forms import VideoForm
+from .models import Video, Students, CustomUser
+
+def upload_video(request):
+    if request.method == 'POST':
+        form = VideoForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return render(request, 'staff_template/videos.html', {'videos': Video.objects.all()})
+    else:
+        form = VideoForm()
+    return render(request, 'staff_template/upload_videos.html', {'form': form})
+
+def video_list(request):
+    student = CustomUser.objects.get(id=request.user.id)
+    return render(request, 'staff_template/videos.html', {'videos': Video.objects.all(), 'student':student})
