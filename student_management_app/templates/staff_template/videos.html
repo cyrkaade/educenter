@@ -1,3 +1,31 @@
+{% extends 'student_template/base_template.html' %}
+
+{% block page_title %}
+    Пополнить баланс
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+{% if user_type == 3 %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video List</title>
+</head>
+<body>
+    <h1>Video List</h1>
+    <ul>
+        {% for video in videos %}
+            <li>{{ video.title }} <video width="320" height="240" controls>
+            <source src="{{ video.video_file.url }}" type="video/mp4"></video></li>
+        {% empty %}
+            <li>No videos have been uploaded.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+{% else %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,3 +44,5 @@
     <a href="{% url 'upload_videos' %}">Upload another video</a>
 </body>
 </html>
+{% endif %}
+{% endblock main_content %}

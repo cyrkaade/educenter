@@ -76,4 +76,4 @@ def upload_video(request):
 
 def video_list(request):
     student = CustomUser.objects.get(id=request.user.id)
-    return render(request, 'staff_template/videos.html', {'videos': Video.objects.all(), 'student':student})
+    return render(request, 'staff_template/videos.html', {'videos': Video.objects.all(), 'student':student, 'user_type':int(student.user_type)})

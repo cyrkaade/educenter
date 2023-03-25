@@ -33,7 +33,9 @@
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Оформить подписку</button>
+    <div class="card-footer">
+        <button type="submit" class="btn btn-primary">Подписаться</button>
+    </div>
   </form>
 
   <p>Your subscription is currently: <strong>{{ subscription_status }}</strong></p>

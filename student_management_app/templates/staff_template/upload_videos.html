@@ -1,4 +1,4 @@
-{% extends 'hod_template/base_template.html' %}
+{% extends 'student_template/base_template.html' %}
 
 {% block page_title %}
     Добавление видеоуроков
@@ -19,7 +19,9 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form }}
-        <button type="submit">Загрузить</button>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Подписаться</button>
+        </div>
     </form>
 </body>
 </html>
